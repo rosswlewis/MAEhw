@@ -1,0 +1,275 @@
+---
+title: 'Economics 403B: Project 1'
+author: "Ross Lewis, Adam Jacobson, David Contento"
+date: "January 16, 2019"
+output:
+  pdf_document: default
+  word_document: default
+---
+
+TODOS
+discuss - adam / all of us
+introduction - david
+conclusions - ross
+code fixes
+  predition intervals - david
+  
+
+
+
+# I
+## Introduction
+
+TODO
+
+
+# II
+## Results
+
+### 1a
+
+```{r}
+setwd('C:/Users/rossw/Documents/MAE Program/Q2/Applied Econometrics 403B/Project 1')
+data = read.csv("monthly-milk-production-pounds-p.csv",header = F)
+names(data) = c('date','milkproduction')
+data = na.exclude(data)
+attach(data)
+datats = ts(milkproduction,start=1962,freq=12)
+#datats = na.exclude(datats)
+time = seq(1962,1975.91666666666,length=length(datats))
+plot.ts(datats,main='Monthly Milk Production From 1962 to 1975',ylab='Pounds Per Cow')
+#datats
+#time
+#na.exclude(datats)
+```
+
+### 1b
+
+TODO
+
+### 1c
+
+We observe large amounts of autocorrelation obviously.  This shows nonstationary.
+
+```{r}
+#acf and pcf plots
+acf(datats,main='ACF of Residuals')
+pacf(datats,main='PACF of Residuals')
+```
+
+### 1d
+
+```{r}
+#, fig.width=6, fig.height=6
+#Linear Fit
+mod1=lm(datats~time)
+#par(mfrow=c(2,1))
+plot(datats, ylab="Monthly milk production",main='Monthly Milk Production Linear Fit', xlab="Time", lwd=2, col='skyblue3', xlim=c(1962,1975))
+#plot(datats)
+lines(time,mod1$fitted.values,col="red3",lwd=2)
+
+#quadratic fit
+mod2=lm(datats~time+I(time^2))
+#par(mfrow=c(2,1))
+plot(datats,ylab="Monthly milk production",main='Monthly Milk Production Quadratic Fit', xlab="Time", lwd=2, col='skyblue3', xlim=c(1962,1975))
+lines(time,mod2$fitted.values,col="red3",lwd=2)
+
+
+#periodic + quadratic fit
+sin.t<-sin(2*pi*time)
+cos.t<-cos(2*pi*time)
+mod3=lm(datats~time+I(time^2) + sin.t + cos.t)
+#par(mfrow=c(2,1))
+plot(datats,ylab="Monthly milk production",main='Monthly Milk Production Periodic Plus Quadratic Fit', xlab="Time", lwd=2, col='skyblue3', xlim=c(1962,1975))
+lines(time,mod3$fitted.values,col="red3",lwd=2)
+```
+
+
+### 1e
+
+```{r}
+#plot of residuals for linear
+plot(mod1$fitted.values,mod1$residuals, main='Residuals by Fitted Values', ylab="Residuals",type='l',xlab="Fitted Value",col='red')
+plot(mod2$fitted.values,mod2$residuals, main='Residuals by Fitted Values', ylab="Residuals",type='l',xlab="Fitted Value",col='red')
+plot(mod3$fitted.values,mod3$residuals, main='Residuals by Fitted Values', ylab="Residuals",xlab="Fitted Value",col='blue')
+```
+
+
+### 1f
+
+TODO discuss
+
+```{r}
+hist(mod1$residuals,col='skyblue',xlab='Residuals',main='Residuals of Linear Fit')
+hist(mod2$residuals,col='skyblue',xlab='Residuals',main='Residuals of Quadratic Fit')
+hist(mod3$residuals,col='skyblue',xlab='Residuals',main='Residuals of Periodic + Quadratic Fit')
+```
+
+### 1g
+TODO DISCUSS
+
+```{r}
+library(tsoutliers)
+JarqueBera.test(mod1$residuals)
+JarqueBera.test(mod2$residuals)
+JarqueBera.test(mod3$residuals)
+```
+
+
+### 1h
+
+```{r}
+acf(mod1$residuals) 
+pacf(mod1$residuals)
+
+acf(mod2$residuals) 
+pacf(mod2$residuals)
+
+acf(mod3$residuals) 
+pacf(mod3$residuals)
+```
+
+
+### 1i
+ (R2, t???distribution, F???distribution,etc.)
+TODO
+
+```{r}
+summary(mod1)
+summary(mod2)
+summary(mod3)
+```
+
+### 1j
+
+TODO
+
+```{r}
+AIC(mod1,mod2,mod3)
+BIC(mod1,mod2,mod3)
+```
+
+
+
+
+
+
+
+### 1k
+TODO do all
+
+```{r}
+library(forecast)
+plot(predict(mod1,h = 20,level=.95))
+plot(forecast(object = mod1$fitted.values,h = 20),main="Forecasts",xlab="year", ylab="Milk Production",shadecols="oldstyle")
+```
+
+
+
+
+### 2a
+
+```{r}
+#seasonal dummies 
+seasonal=tslm(datats~season)
+summary(seasonal)
+```
+
+
+
+### 2b
+
+TODO INTERPERET
+
+```{r}
+#plot factors (I dont think this is what he wants)
+plot(seasonal$coefficients,col='blue',xlab='Month',ylab='Coefficient',main='Seasonal Effects per month')
+
+```
+
+
+
+
+
+### 2c
+
+TODO DISCUSS
+
+```{r}
+
+seasontrend = tslm(datats~time + I(time^2) + sin.t + cos.t + season)
+plot(seasontrend$fitted.values,seasontrend$residuals,col='red',xlab='Fitted Values',ylab='Residuals',main='Residuals by Fitted Values')
+
+plot(datats,ylab="Monthly amount of milk production", xlab="Time", lwd=2, col='skyblue3', xlim=c(1962,1975),main='Monthly Milk Production Total Model Fit')
+lines(time,seasontrend$fitted.values,col="red3",lwd=2)
+
+```
+
+
+
+
+### 2d
+
+TODO DISCUSS
+
+```{r}
+summary(seasontrend)
+
+```
+
+
+
+
+### 2e
+
+TODO DISCUSS
+
+```{r}
+JarqueBera.test(seasontrend$residuals)
+```
+
+
+
+### 2f
+
+TODO DISCUSS
+
+```{r}
+acf(seasontrend$residuals,main='ACF of Residuals')
+pacf(seasontrend$residuals,main='PACF of Residuals')
+```
+
+
+
+### 2g
+
+TODO PREDICTION INTERVAL
+
+
+```{r}
+plot(forecast(object = seasontrend$fitted.values,h = 20),main="Forecasts",xlab="year", ylab="Milk Production",shadecols="oldstyle")
+
+```
+
+
+
+
+# III
+## Conclusions and Future Works
+
+#### Our final model included a dummy variable for each month, a periodic term, and a quadtraic term over time.  With these simple features, we are able to have a fitted model that matches the data almost exactly.  We've considered some possible work we can add to this:
+
+#### It would be interested to get data after 1975 and use our model to make predictions on it.  We can also use this to make future predctions in 2019.  Additionally, our model doesn't fit the data perfectly.  There may be some other predictors we can use when we fit our model.
+
+
+# IV
+## References
+
+https://datamarket.com/data/set/22ox/monthly-milk-production-pounds-per-cow-jan-62-dec-75#!ds=22ox&display=line
+
+Agriculture, Source: Cryer (1986), in file: data/milk, Description: Monthly milk production: pounds per cow. Jan 62 - Dec 75
+
+# V
+## R Code
+
+included

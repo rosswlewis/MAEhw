@@ -1,0 +1,411 @@
+---
+title: "Income Inequality Homework 1"
+author: "Ross Lewis, Qian Li"
+date: "April 18, 2019"
+output: pdf_document
+---
+
+```{r,echo=FALSE}
+#load data
+rm(list=ls())
+#setwd("C:/Users/alice/OneDrive/Desktop/424 income inequality/hw1")
+setwd("C:/Users/rossw/Documents/MAE Program/Q3/Inequality/Homework1")
+```
+
+```{r,echo=FALSE}
+#usa1 <- read.csv(file="usa_00001.csv", header=TRUE, sep=",")
+#names(usa1) 
+#names(usa1) = c('year','datanum','serial','cbserial','hhwt','gq','pernum','perwt','sex','age','race','raced','educ','educd','degfield','degfieldd','degfield2','degfield2d','ind90ly','wkswork2','uhrwork','inctot','incwage','incearn','vetstat','vetstatd')
+#summary(usa1)
+#usa1 = usa1[!(usa1$degfield==0),]
+#usa1<-subset(usa1, degfield!=0)
+#Users should be aware that Census codes for field of degree changed slightly between 2009 and 2010, the first two years in which DEGFIELD is offered. For example, Neuroscience changed from code 4003 in 2009 to 3611 in 2010.
+#stem major = 1
+#we find the stem major list from this website: http://stemdegreelist.com/stem-degree-list/
+#non-stem = 0 c(15,22,23,26,29,32,33,34,35,40,48,49,53,54,55,58,60,62,64)
+
+#makedegbins = function(df){
+#  degbins = 0
+  
+#  if(df[5] %in% c(11,13,14,19,20,21,24,25,36,37,38,50,51,52,56,57,59,61) | df[6] %in% c(11,13,14,19,20,21,24,25,36,37,38,50,51,52,56,57,59,61)){
+#    degbins = 1
+#  }else{
+#    degbins = 0
+#  }
+#  degbins
+#} 
+
+#usa1$stem = apply(usa1,1, makedegbins)
+
+#usa1$female = as.numeric(usa1$sex == 1)
+#usa1$white = as.numeric(usa1$race == 1)
+#drops = c('degfield','degfield2',"sex","race",'degfieldd','degfield2d','vetstat','vetstatd','educ','educd','datanum','serial','cbserial','hhwt','gq','pernum','raced','incearn','inctot')
+#usa1 = usa1[ , !(names(usa1) %in% drops)]
+#usa1 = usa1[!(usa1$incwage==999999),]
+#usa1 = usa1[!(usa1$incwage==999998),]
+#usa1 = usa1[usa1$incwage >= 0,]
+#summary(usa1)
+
+#write.csv(usa1, file = "cleaneddata.csv")
+```
+
+```{r,echo=FALSE}
+usa1 <- read.csv(file="cleaneddata.csv", header=TRUE, sep=",")
+attach(usa1)
+usa1$lbin =  mapply( function(a,f,w,s){paste0(a,f,w,s)}, age, female, white, stem)
+detach(usa1)
+
+GDPDEF <- read.csv(file="GDPDEF.csv", header=TRUE, sep=",")
+GDPDEF$year = as.numeric(substr(GDPDEF$DATE, 0, 4) )
+```
+
+```{r,echo=FALSE}
+#Create Instrument
+usa1$stem_perwt <- usa1$stem *usa1$perwt##Actually, I don't think we need to multiply weights for stem variable.
+usa1$nonstem_perwt <- (1-usa1$stem) *usa1$perwt
+aggregate_H_L <- aggregate(cbind(usa1$stem_perwt,usa1$nonstem_perwt),by=list(year=usa1$year),FUN=sum)
+aggregate_H_L$z = log(aggregate_H_L$V1/aggregate_H_L$V2)
+names(aggregate_H_L) = c('year','stem','nonstem','z')
+usa1 = merge(usa1, aggregate_H_L,by="year")
+```
+
+```{r,echo=FALSE}
+#Deal with Income 
+wkswork2 = 0 * (usa1$wkswork2==0)+
+  7 * (usa1$wkswork2 == 1)+
+  20 * (usa1$wkswork2 == 2)+
+  33 * (usa1$wkswork2 == 3)+
+  43.5 * (usa1$wkswork2 == 4)+
+  48.5 * (usa1$wkswork2 == 5)+
+  51 * (usa1$wkswork2 == 6)
+
+usa1$wkswork2 = ifelse(wkswork2==0,wkswork2, wkswork2)
+
+usa1$hrs_week_ly=usa1$uhrwork*usa1$wkswork2
+usa1_year_hrs = usa1[,c("year","hrs_week_ly","wkswork2","uhrwork")]
+usa1_year_hrs =usa1_year_hrs[order(usa1_year_hrs$year),]
+```
+
+```{r,echo=FALSE}
+#Changing year from survey year to work year
+usa1$year = usa1$year-1
+```
+
+```{r,echo=FALSE}
+#Getting data in final form for Shift-Share analysis
+usa1 <- usa1[usa1$ind90ly != -99,]
+ss <- usa1[order(usa1$year),]
+ss$incwage = ss$incwage * ss$perwt
+#drop the people with missing industry
+ss$ind90ly =  mapply( function(x){ifelse(is.na(x),-99,x)}, ss$ind90ly)
+ss <- ss[ss$ind90ly != -99,]
+#Create Data for ShiftShare Analysis
+#df_ShiftShare <-  aggregate(cbind(incwage = ss$incwage), 
+#                        by=list(col=ss$stem,year=ss$year,ind90ly=ss$ind90ly), 
+#                        FUN=sum)
+#head(ss)
+#names(usa1)
+#head(usa1)
+head(ss[which(ss$incwage<1),])
+df_ShiftShare <-  aggregate(ss[,c('stem.x','year','ind90ly','incwage')], 
+                        by=list(stem=ss$stem.x,year=ss$year,ind90ly=ss$ind90ly), 
+                        FUN=sum)
+head(df_ShiftShare)
+```
+
+```{r,echo=FALSE}
+#Getting data in final form for Canonical Model
+ss$ind90ly <- NULL#this is how you drop
+ss$hrs_week_ly =  mapply( function(x){ifelse(is.na(x),0,x)}, ss$hrs_week_ly)#rename the missing hours weekly
+ss$hrs_week_ly = ss$hrs_week_ly * ss$perwt
+#we have already done: ss$incwage = ss$incwage * ss$perwt
+df_cm_sum <-  aggregate(list(hours = ss$hrs_week_ly,
+                             incwage = ss$incwage),
+                        by=list(lbin=ss$lbin,year=ss$year), FUN=sum)
+#need to do weighted mean by hand, sum them and then divide by the sum of the weights
+ss$stem_w = ss$stem.x * ss$perwt
+ss$z_w = ss$z * ss$perwt
+df_cm_mean <-  aggregate(cbind(stem_w = ss$stem_w,z_w = ss$z_w,sum_perwt = ss$perwt),##why not just aggregate col, z and perwt by list directly?
+                        by=list(lbin=ss$lbin,year=ss$year), FUN=sum)
+df_cm_mean$stem = df_cm_mean$stem_w / df_cm_mean$sum_perwt 
+df_cm_mean$z = df_cm_mean$z_w / df_cm_mean$sum_perwt 
+df_cm_mean$stem_w  = NULL
+df_cm_mean$z_w  = NULL
+df_cm_mean$sum_perwt  = NULL
+#df_cm stands for data canonmical model
+df_cm <- merge(df_cm_sum,df_cm_mean,by=c("lbin","year"))
+df_cm$stem = as.integer(df_cm$stem)
+
+df_cm <- merge(df_cm,GDPDEF,by="year")
+#defaults to inner join
+df_cm$inc = df_cm$inc/df_cm$GDPDEF
+
+df_cm$lnrinc=log(df_cm$inc)
+df_cm$lnhours=log(df_cm$hours)
+df_cm$y=df_cm$lnrinc-df_cm$lnhours
+#in the stata code, dummies are made for every interaction between year and col.
+df_cm_instruments <-  aggregate(cbind(z = df_cm$z),
+                         by=list(year=df_cm$year), FUN=mean)
+
+#recall that labor bins are: age, female, white,stem
+#we can the y = logged ratio of (income to hours) by lbin and year/coll
+df_cm$year_col = as.numeric(paste0(df_cm$year,df_cm$stem))
+#### drop the negative infinity
+df_cm_nonan = df_cm[!(is.nan(df_cm$y)|is.infinite(df_cm$y)),]
+df_cm_nonan = df_cm_nonan[order(df_cm_nonan$year,df_cm_nonan$lbin,df_cm_nonan$hours),]
+df_cm_nonan$year_col.f = factor(paste0(df_cm_nonan$year,df_cm_nonan$stem))
+df_cm_nonan$lbin.f = factor(df_cm_nonan$lbin)
+#regress y on labor bin and year/stem
+model_lbin_yc = lm(y ~ year_col.f + lbin.f - 1, data = df_cm_nonan)
+#names(model_lbin_yc$coefficients)
+
+#gather the indices
+year_col_i = grep("year_col.f",names(model_lbin_yc$coefficients))
+lbin_i= grep("lbin.f",names(model_lbin_yc$coefficients))
+
+l_shifter_df <- data.frame(l_shifter = model_lbin_yc$coefficients[lbin_i], 
+                            lbin = gsub("lbin.f","",names(model_lbin_yc$coefficients)[lbin_i]))
+  
+year_col_df_long <- data.frame(y = model_lbin_yc$coefficients[year_col_i], 
+                           year_col = gsub("year_col.f","",names(model_lbin_yc$coefficients)[year_col_i]))
+
+year_col_df_long <- data.frame(estimate = model_lbin_yc$coefficients[year_col_i], 
+                               year = substr(year_col_df_long$year_col, start=0, stop=4),
+                               col = substr(year_col_df_long$year_col, start=5, stop=5))
+
+year_col_df_wide <- reshape(year_col_df_long, 
+                            timevar = "col",
+                            idvar = c("year"),
+                            direction = "wide")
+
+lnwage_df = data.frame( year = year_col_df_wide$year , wage_premium = year_col_df_wide$estimate.1-year_col_df_wide$estimate.0)
+head(lnwage_df)
+```
+
+```{r,echo=FALSE}
+###### EXP happening here
+df_canonical <- merge(df_cm_nonan,l_shifter_df,by="lbin")
+df_canonical <- merge(df_canonical,lnwage_df,by="year")
+df_canonical$l_shifter = exp(df_canonical$l_shifter)
+head(df_canonical$l_shifter)
+###### EXP happening here
+df_canonical <- df_canonical[!is.na(df_canonical$l_shifter),] #drop the people with l_shifter as nan
+df_canonical$supply = df_canonical$l_shifter * df_canonical$hours
+head(df_canonical)
+
+df_canonical_col0 = df_canonical[df_canonical$stem==0,]
+df_canonical_col1 = df_canonical[df_canonical$stem==1,]
+head(df_canonical_col0)
+
+supply_year_col0 <- aggregate(list(supply = df_canonical_col0$supply),by = list(year = df_canonical_col0$year),  FUN=sum)
+supply_year_col0$ln_supply_col0 = log(supply_year_col0$supply)
+head(supply_year_col0)
+supply_year_col0$supply <- NULL
+
+supply_year_col1 <- aggregate(list(supply = df_canonical_col1$supply),by = list(year = df_canonical_col1$year),  FUN=sum)
+supply_year_col1$ln_supply_col1 = log(supply_year_col1$supply)
+head(supply_year_col1)
+supply_year_col1$supply <- NULL
+
+
+supply_year <- merge(supply_year_col0,supply_year_col1,by="year")
+head(supply_year)
+supply_year$ln_rel_supp_coll = supply_year$ln_supply_col1 - supply_year$ln_supply_col0
+head(supply_year)
+supply_year$ln_supply_col1 <- NULL
+supply_year$ln_supply_col0 <- NULL
+
+df_CM_complete <- merge(supply_year,lnwage_df,by="year")
+df_CM_complete <- merge(df_CM_complete,df_cm_instruments,by="year")
+head(df_CM_complete)
+#create time trend
+df_CM_complete$t = df_CM_complete$year - min(df_CM_complete$year)
+head(df_CM_complete)
+names(df_CM_complete) = c('year','s','w','z','t')
+head(df_CM_complete)
+```
+
+```{r,echo=FALSE}
+#let's do Canonical Model Analysis
+#set initial year to zero
+initial_year = df_CM_complete[df_CM_complete$year==min(df_CM_complete$year),]
+
+df_CM_complete$s = df_CM_complete$s- initial_year$s
+df_CM_complete$w = df_CM_complete$w - initial_year$w
+df_CM_complete$z = df_CM_complete$z- initial_year$z
+
+model_ols =lm(w~t+s,data = df_CM_complete)
+summary(model_ols)
+
+library(ivpack)
+model_iv <- ivreg(w~t+s|t+z,data = df_CM_complete)
+summary(model_iv)
+
+model_wt <- lm(w~t,data = df_CM_complete)
+df_CM_complete$w_r = model_wt$residuals
+
+model_st <- lm(s~t,data = df_CM_complete)
+df_CM_complete$s_r = model_st$residuals
+
+model_wr_sr <- lm(w_r~s_r,data = df_CM_complete)
+df_CM_complete$w_detr_pred = model_wr_sr$fitted.values
+
+model_wst <- lm(w~s+t,data = df_CM_complete)
+df_CM_complete$w_pred = model_wst$fitted.values
+```
+
+```{r,result="asis"}
+library(stargazer)
+stargazer(model_ols,model_iv,align=TRUE,title = "Canonical Model Analysis", no.space=TRUE)
+```
+
+
+```{r,echo=FALSE}
+library(ggplot2)
+WageGap_plot <- ggplot(data=df_CM_complete, aes(x=year, y=w, group=1)) +
+  geom_line()+
+  geom_point()+
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5,size=20),
+        axis.text.x = element_text(face="bold", color="#993333", size=10, angle=45),
+        axis.text.y = element_text(face="bold", color="#993333", size=10, angle=15)) +
+  labs(title="Evolution of Skill Premium",x="Year Income Earned", y = "Skill Premium")+
+  scale_x_continuous(breaks = pretty(df_CM_complete$year, n = 10)) +
+  scale_y_continuous(breaks = pretty(df_CM_complete$w, n = 10)) ###########edit here also
+ggsave("WageGap.pdf", width = 8, height = 5)
+
+RelativeSupply_plot <- ggplot(data=df_CM_complete, aes(x=year, y=s, group=1)) +
+  geom_line()+
+  geom_point()+
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5,size=20),
+        axis.text.x = element_text(face="bold", color="#993333", size=10, angle=45),
+        axis.text.y = element_text(face="bold", color="#993333", size=10, angle=15)) +
+  labs(title="Evolution of Relative Skill Supply",x="Year Income Earned", y = "Change in Relative Supply")+
+  scale_x_continuous(breaks = pretty(df_CM_complete$year, n = 10)) +
+  scale_y_continuous(breaks = pretty(df_CM_complete$s, n = 10))  ###########edit here also
+ggsave("RelativeSupply.pdf", width = 8, height = 5)
+
+SPFit_plot <- ggplot(data=df_CM_complete) +
+  geom_line(aes(x = year, y = w, color = 'Skill Premium')) +
+  geom_line(aes(x = year, y = w_pred, color = 'Predicted SP')) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5,size=20),
+        axis.text.x = element_text(face="bold", color="#993333", size=10, angle=45),
+        axis.text.y = element_text(face="bold", color="#993333", size=10, angle=15),
+        legend.position = c(0.8, 0.2)) +
+  labs(color="",title="Fit of Predicted Skill Premium",x="Year Income Earned", y = "Skill Premium")+
+  scale_x_continuous(breaks = pretty(df_CM_complete$year, n = 10)) +
+  scale_y_continuous(breaks = pretty(df_CM_complete$w, n = 10))  ###########edit here also
+ggsave("SPFit.pdf", width = 8, height = 5)
+
+DetrendedSPFit_plot <- ggplot(data=df_CM_complete) +
+  geom_line(aes(x = year, y = w_r, color = 'Detrended SP')) +
+  geom_line(aes(x = year, y = w_detr_pred, color = 'Predicted detrended SP')) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5,size=20),
+        axis.text.x = element_text(face="bold", color="#993333", size=10, angle=45),
+        axis.text.y = element_text(face="bold", color="#993333", size=10, angle=15),
+        legend.position = c(0.8, 0.2)) +
+  labs(color="",title="Fit of de-trended Skill Premium",x="Year Income Earned", y = "De-trended Skill Premium (Predicted, Actual)")+
+  scale_x_continuous(breaks = pretty(df_CM_complete$year, n = 10)) +
+  scale_y_continuous(breaks = pretty(df_CM_complete$w_r, n = 10))  ###########edit here also
+ggsave("DetrendedSPFit.pdf", width = 8, height = 5)
+
+#The dual axis is tricky.. just multiply by the scale you want 
+second_scale = 1.1
+DetrendDetrend_p <- ggplot(df_CM_complete, aes(x = year))
+DetrendDetrend_p <- DetrendDetrend_p + geom_line(aes(y = s_r, colour = "Detrended Relative Supply"))
+  # adding the relative humidity data, transformed to match roughly the range of the temperature
+DetrendDetrend_p <- DetrendDetrend_p + geom_line(aes(y = second_scale * w_r , colour = "Detrended SP"))
+  # now adding the secondary axis, following the example in the help file ?scale_y_continuous
+  # and, very important, reverting the above transformation
+DetrendDetrend_p <- DetrendDetrend_p + scale_y_continuous(sec.axis = sec_axis(~.*1/second_scale  , name = "Detrended Change in Skill Premium"))
+  # modifying colours and theme options
+DetrendDetrend_p <- DetrendDetrend_p + scale_colour_manual(values = c("blue", "red"))+
+  theme_minimal() +
+    theme(plot.title = element_text(hjust = 0.5,size=20),
+          axis.text.x = element_text(face="bold", color="#993333", size=10, angle=45),
+          axis.text.y = element_text(face="bold", color="#993333", size=10, angle=15),
+          legend.position = c(0.8, 0.2)) +
+    labs(color="",title="Relationship Btw Detrended Series",x="Year Income Earned", y = "Detrended Change in Relative Supply")
+
+ggsave("DetrendDetrend.pdf", width = 8, height = 5)
+```
+
+```{r}
+WageGap_plot
+RelativeSupply_plot
+SPFit_plot
+DetrendedSPFit_plot
+DetrendDetrend_p
+```
+
+```{r,echo=FALSE}
+#shift share analysis
+#df_ShiftShare
+unique(df_ShiftShare$year)
+start = 2008
+end = 2016
+df_SS_sten = df_ShiftShare[df_ShiftShare$year==2008 | df_ShiftShare$year==2016,]
+
+#sort to have a look
+df_SS_sten= df_SS_sten[order(df_SS_sten$year),]
+
+df_SS_sten$inc = df_SS_sten$incwage
+df_SS_sten$incwage = NULL
+
+df_SS_w <- reshape(df_SS_sten, 
+                            timevar = "stem",
+                            idvar = c("year","ind90ly"),
+                            direction = "wide")
+df_SS_w$i0_i1 = df_SS_w$inc.0 + df_SS_w$inc.1
+df_SS_w = df_SS_w[!is.na(df_SS_w$i0_i1),]
+
+df_SS_year_agg <- aggregate(cbind(WBcol=df_SS_w$inc.1,WB=df_SS_w$i0_i1), by=list(year=df_SS_w$year), FUN=sum)
+df_SS_year_agg$WBs = df_SS_year_agg$WBcol/df_SS_year_agg$WB
+
+
+df_SS_w = merge(df_SS_w,df_SS_year_agg,by="year")
+df_SS_w$int_i = df_SS_w$inc.1/df_SS_w$i0_i1
+df_SS_w$exp_i = df_SS_w$i0_i1/df_SS_w$WB
+
+df_SS_w <- df_SS_w[,c("year", "ind90ly", "WBs", "int_i", "exp_i")]
+
+library(utils)
+library(plyr)
+#to ensure there is 1 entry per industry x year
+full_ind_year<-expand.grid(unique(df_SS_w$ind90ly),unique(df_SS_w$year))
+names(full_ind_year) <- c("ind90ly","year")
+
+df_SS_full <- join(full_ind_year,df_SS_w,by=c("year","ind90ly"))
+df_SS_full$int_i =  mapply( function(x){ifelse(is.na(x),0,x)}, df_SS_full$int_i)#replace the missing ind_i
+df_SS_full$exp_i =  mapply( function(x){ifelse(is.na(x),0,x)}, df_SS_full$exp_i)#replace the missing exp_i
+
+df_SS_year_diff <- reshape(df_SS_full, 
+                   timevar = "year",
+                   idvar = c("ind90ly"),
+                   direction = "wide")
+
+#df_SS_year_diff<-df_SS_year_diff[!is.na(df_SS_year_diff$WBs.1967) & !is.na(df_SS_year_diff$WBs.2017),]
+df_SS_year_diff$Dint_i = df_SS_year_diff$int_i.2016 - df_SS_year_diff$int_i.2008
+df_SS_year_diff$Dexp_i = df_SS_year_diff$exp_i.2016 - df_SS_year_diff$exp_i.2008
+
+df_SS_year_diff$Aint_i = (df_SS_year_diff$int_i.2016 + df_SS_year_diff$int_i.2008 )/2
+df_SS_year_diff$Aexp_i = (df_SS_year_diff$exp_i.2016 + df_SS_year_diff$exp_i.2008 )/2
+
+df_shiftshare_complete = df_SS_year_diff[,c("ind90ly","Dint_i","Dexp_i","Aint_i","Aexp_i")]
+#want to have the difference and average of each industry
+df_shiftshare_complete$DWBs = df_SS_year_diff$WBs.2016-df_SS_year_diff$WBs.2008
+
+Bs = df_shiftshare_complete$Aint_i*df_shiftshare_complete$Dexp_i
+Ws = df_shiftshare_complete$Dint_i*df_shiftshare_complete$Aexp_i
+
+DWB = df_shiftshare_complete$DWBs[1]
+B = sum(Bs)
+W = sum(Ws)
+
+#Final OAXACA decomposition
+c(DWB,B,W)
+```
+

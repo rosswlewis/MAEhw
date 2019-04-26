@@ -1,0 +1,18 @@
+[Extract\General]
+FileName=C:\Users\rossw\Documents\MAE Program\Data Platform\temp.sql
+ExtractStruct=1
+ExtractData=1
+
+[Extract\Options]
+CreateDatabase=1
+DropStatement=0
+DropDatabase=0
+CommitAfter=0
+InsertCommit=0
+DataAfterDef=0
+OpenEditor=1
+
+[Extract]
+Tables=
+DataTables=public.Tweet,public.TwitterUser
+

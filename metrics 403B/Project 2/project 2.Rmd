@@ -1,0 +1,280 @@
+---
+title: "Project 2 Applied Econometrics"
+author: "David Contento, Adam Jacobson, and Ross Lewis"
+date: "February 11, 2019"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+#Part I) Introduction
+
+Our data for this project consists of 2 time series variables: the measure of price level CPI and the measure of money supply M2. CPI measures price levels by examining the change in prices for some representative basket of goods while M2 measures money supply consisting of currency in the hands of the public, demand deposits, some overnight repurchase agreements, savings deposits, money market mutual funds, and other miscellaneous items. The standard view on the relation between money supply and price level is that of long run money neutrality. That is any change in money supply will produce a corresponding change in the price level over the long run. Consequently changes in money supply can only effect nominal variables in the long run not real variables. We will use a VAR time series model to examine the statistical relationship between CPI and M2 over time. Our data is sourced from FRED (Federal Reserve Econominc Databse).
+
+#Part II) Results 
+
+```{r, warning=F}
+library(forecast)
+library(ggplot2)
+library(tseries)
+setwd('C:/Users/rossw/Documents/MAE Program/Q2/Applied Econometrics 403B/Project 2')
+moneySupply = read.csv("M2NS.csv", header = TRUE)
+cpi = read.csv("CPIAUCNS.csv", header = TRUE)
+
+moneySupply$Date <- as.Date(moneySupply$DATE, format= "%Y-%m-%d")
+moneySupply = moneySupply[,c('Date','M2NS')]
+cpi$Date <- as.Date(cpi$DATE, format= "%Y-%m-%d")
+cpi = cpi[,c('Date','CPIAUCNS')]
+```
+
+
+##A
+
+This is our ACF and PACF for M2. Our ACF slowly declines over time and our PACF has a strong spike at lag 1 and no spikes at all outside of that which suggests an AR model of order 1.
+```{r}
+tsdisplay(moneySupply,main="Money Supply")
+#A graph of M2 over time. It shows its gradual increase since 1960
+ggplot(data = moneySupply, aes(x = Date, y = M2NS)) +
+  geom_line(color = "#00AFBB", size = 2)
+```
+
+
+Our ACF and PACF for CPI. Like the ACF and PACF for M2 the CPI ACF and PACF shows the ACF declining slowly over the lags and the PACF spiking at lag 1 and not significant after that.
+
+```{r}
+tsdisplay(cpi,main="CPI")
+ggplot(data = cpi, aes(x = Date, y = CPIAUCNS)) +
+  geom_line(color = "#00AFBB", size = 2)
+
+
+cpiTs = ts(subset(cpi, Date > "1980-11-01" & Date <  "2007-12-01"), frequency=12)
+moneySupplyTs = ts(subset(moneySupply, Date > "1980-11-01" & Date <  "2007-12-01"), frequency=12)
+data = merge(cpiTs,moneySupplyTs)
+```
+
+
+##b
+```{r}
+msModel=tslm(moneySupplyTs~trend+season)
+plot(stl(moneySupplyTs[,'M2NS'], s.window="periodic"))
+summary(msModel)
+```
+
+None of our seasonal components are even close to statistical significance. The trend and intercept are highly statistically significant however. This suggests the data is not seasonal but shows a strong trend which is consistent with a prima facie look at the data
+
+```{r}
+cpiModel=tslm(cpiTs~trend+season)
+plot(stl(cpiTs[,'CPIAUCNS'], s.window="periodic"))
+summary(cpiModel)
+```
+
+Similar to the above only the trend and intercept are statistically significant. This is also consistent with a prima facie visual examination of the data.
+
+#c
+
+```{r}
+plot(msModel$fitted.values[,'M2NS'], ylab="Fitted Values", main="Fitted values of money supply")
+plot(msModel$residuals[,'M2NS'], ylab="residuals", main="Residuals of money supply")
+```
+
+The fitted values for M2 show a strong linear trend. The residuals are relatively flat until they dip down rapidly and then rapidly go up.
+
+```{r}
+plot(cpiModel$fitted.values[,'CPIAUCNS'], ylab="Fitted Values", main="Fitted values of CPI")
+plot(cpiModel$residuals[,'CPIAUCNS'], ylab="Residuals", main="Residuals of CPI")
+```
+
+The fitted values here also show a strong and consistent linear trend while the residuals are much more unstable compared with M2.
+
+#e
+```{r}
+#acf and pacf of money supply
+tsdisplay(msModel$residuals,main="Money Supply")
+```
+
+The M2 residuals ACF and PACF look just like the ACF and PACF for M2 itself. ACF declines over time while PACF spikes at lag 1.
+
+```{r}
+#acf and pacf of CPI 
+tsdisplay(cpiModel$residuals,main="CPI")
+```
+
+The residuals for CPI also show a decline in the ACF over time. The PACF spikes strongly at lag 1 with weak spikes at lags 2, 11, 12, 15, 16, 25, 26
+
+
+#f
+
+```{r}
+library(strucchange)
+#CUSUM for Money supply
+plot(efp(msModel$residuals~1, type = "Rec-CUSUM"))
+```
+
+```{r}
+#CUSUM for CPI 
+plot(efp(cpiModel$residuals~1, type = "Rec-CUSUM"))
+```
+
+
+The CUSUM charts for both M2 and CPI look similar with small deviations outside the error bands in the begining but no indications of structural breaks.
+
+
+#g
+```{r}
+y=recresid(msModel$residuals~1)
+plot(y, pch=16,ylab="Recursive Residuals", main="residuals of money supply")
+
+y=recresid(cpiModel$residuals~1)
+plot(y, ylab="Recursive Residuals", main="residuals of CPI Index ")
+```
+
+#h
+```{r}
+#Diagnostic statistics for CPI 
+summary(cpiModel)
+```
+
+The adjusted R-squared is extremely high at 0.9969 and the F-Statistic has a p-value well under 0.05 level indicating the model is statistically significant.
+
+#i
+```{r}
+plot(forecast(msModel,h=12),shadecols="oldstyle", main="forecast for Money Supply")
+plot(forecast(cpiModel,h=12),shadecols="oldstyle", main="forecast for CPI ")
+```
+
+The forecast for M2 shows relatively wide error bands reflecting its relatively greatly instability. The CPI has far smaller error bands which is unsurpring given its relatively greater stability.
+
+#j
+```{r, message=F, warning=F}
+library(vars)
+var_model=VAR(data[,c('CPIAUCNS','M2NS')],p=4)
+summary(var_model)
+```
+
+Our Var model shows the CPI lags 1, 2, and 3 are significant for CPI but none of the M2 lags are significant. This suggests previous levels of M2 do not predict CPI. M2 however is affected by its own lags at 1, 2, 3, and 4. It also has a statistically siginificant coefficient at lag 1 for CPI. CPI not being influnced by M2 lags is surprising but M2 being affected by the CPI lag likely reflects the Federal Reserve using price levels to determine the fed funds rate.
+
+#k
+```{r}
+#impluse response function
+irf(var_model)
+plot(irf(var_model, n.ahead=36))
+```
+
+The impulse reponse function for CPI shows barely any response at all at any point. The impulse response function for M2 however shows a response that slowly grows in magnitude over time. 
+
+#l
+```{r}
+#Granger Causality
+gmon<-ts(moneySupplyTs[,2],start=1908,freq=12)
+gcpi<-ts(cpiTs[,2],start=1908,freq=12)
+#granger test CPI 
+grangertest(gcpi ~ gmon, order = 8)
+```
+
+
+```{r}
+#granger test Money Supply
+grangertest(gmon ~ gcpi, order = 8)
+```
+
+The granger causality test for M2 on CPI shows that it is not statistically significant suggesting the M2 lags are not leading to changes in CPI. The granger causality test for CPI on M2 however is statistically significant. This suggests lags in CPI do predict M2. Like in the comment above the most plausible explanation for this is that the Federal Reserve is observing CPI and using that variable (among others) to determine interest rate setting policies. Through the interet rate mechanisms the fed uses it is ultimately changing M2 in response to it's observations of CPI.
+
+#m
+```{r}
+#VAR prediction
+varPredict = predict(object=var_model, n.ahead=12)
+plot(varPredict, main="VAR predictions", xlab="time", ylab="Money Supply/CPI")
+```
+
+The VAR model seems to give far better forecasts for both CPI and M2 based on how much smaller the error bands are.
+
+#n-a
+```{r}
+#Recursive window with 12 steps ahead forecast
+
+cpi2=cpi[2]
+library(foreach)
+library(MLmetrics)
+library(forecast)
+e2=numeric()
+w_size=424
+n_windows=848
+forecasts=foreach(i=1:n_windows, .combine = rbind) %do% {
+  y_in=cpi2[1:(w_size+i),]
+  fit=auto.arima(y_in)
+  f1=forecast(fit, h=12)
+  f1=as.numeric(f1$mean)
+  f2=cpi2[(w_size+1+i):(w_size+12+i),]
+  e2[i]=MAPE(f1,f2)
+}
+
+plot(e2, main="MAPE for 12 step ahead forecast")
+```
+
+#n-b
+```{r}
+#recursive window with 1 step ahead forecast
+forecasts=foreach(i=1:n_windows, .combine = rbind) %do% {
+  y_in=cpi2[1:(w_size+i),]
+  fit=auto.arima(y_in)
+  f1=forecast(fit, h=1)
+  f1=as.numeric(f1$mean)
+  f2=cpi2[(w_size+1+i):(w_size+2+i),]
+  e2[i]=MAPE(f1,f2)
+}
+
+plot(e2, main="MAPE for 1 step ahead forecast")
+```
+
+
+#n-c
+
+The model performs better for short term forecasts. This is likely because it is an AR(1) process which tends to have forecast error grow over time.
+
+```{r}
+#rolling window with 12 step ahead forecast
+forecasts=foreach(i=1:n_windows, .combine = rbind) %do% {
+  y_in=cpi2[i:(w_size+i),]
+  fit=auto.arima(y_in)
+  f1=forecast(fit, h=12)
+  f1=as.numeric(f1$mean)
+  f2=cpi2[(w_size+1+i):(w_size+12+i),]
+  e2[i]=MAPE(f1,f2)
+}
+
+plot(e2, main="MAPE for 12 step ahead forecast")
+```
+
+```{r}
+#Rolling window with one step ahead forecast 
+forecasts=foreach(i=1:n_windows, .combine = rbind) %do% {
+  y_in=cpi2[i:(w_size+i),]
+  fit=auto.arima(y_in)
+  f1=forecast(fit, h=1)
+  f1=as.numeric(f1$mean)
+  f2=cpi2[(w_size+1+i):(w_size+2+i),]
+  e2[i]=MAPE(f1,f2)
+}
+
+plot(e2, main="MAPE for 1 step ahead forecast")
+```
+
+#n-e
+
+Recursive backtesting and moving average showed similar levels of error. This is likely because it is an AR(1) process so only one lag has an effect. Consequently recursive and moving average estimations will produce similar results since they both look at the one lag that matters.
+
+  
+#Part IV) References 
+
+We got all of our data from the FRED database website. the data ranges from 1980 to 2007 with a monthly time frame. The links below lead to the where we got the data 
+
+Money supply:
+https://l.messenger.com/l.php?u=https%3A%2F%2Ffred.stlouisfed.org%2Fseries%2FM2NS&h=AT0ZEuzIBO_mXQyn6dXWonfEGrMW6N7seOx29LuZzRMhOFzU0w3d9PI7sMPF127fQ4f2FZnG5-qRDWSSp7PK78M_X1g8ZNckMHmp8vPYzRvUuoMbTNUnNIm3FFb1-Khu2e8
+
+CPI:
+https://fred.stlouisfed.org/series/CPIAUCNS
+
+#Part V) Results
+
+We conclude that both movements in M2 and CPI are very 'clean' AR(1) processes. Our most interesting finding wasthat lags in M2 were not strong predictors of movements in CPI like a simple univariate understanding would suggest.  What was even more interesting was that CPI lags were significant in predicting movements in M2. This reflects the endogenous relationship between the two variables since you would expect an inflation targeting central bank like the US Federal Reserve to react to changes in prices levels in a way that would impact money supply measures like M2. Further investigations should look at other model specifications and other money supply measures.  We could also use all of the variables from the full model from the quantity theory of money rather than just M2.

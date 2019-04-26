@@ -1,0 +1,4 @@
+﻿include,not
+"""*buy??XXX*"",""*buy?XXX*""","""*close*buy*XXX*"",""*exit*buy*XXX*"",""*close*buy?XXX*"",""*close*buy?XXX*"",""*close*buy??XXX*"",""*buy*,*XXX*"",""*buy*:*XXX*"",""*buy*fade*"",""*close*buy??XXX*"",""*never*buy*XXX*"""
+"""*buy*lot*XXX*""","""*close*buy*lot*XXX*"""
+"""*expect*move*higher*""",

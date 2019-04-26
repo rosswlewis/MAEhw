@@ -1,0 +1,432 @@
+---
+title: "Homework 1"
+author: "Ross Lewis"
+date: "4/16/2019"
+output:
+  pdf_document: default
+  word_document: default
+  html_document: default
+---
+
+# Question 1
+
+1-1)
+Current account decreases (trade balance decreases by 60k), financial account decreases by 60k, capital account stays the same
+
+Samsung, a corporation in Korea, provided financial advice on an investment worth of 1$ billion dollars with the state of Virgina to install wind turbines in 2020. The state of Virginia payed $60000 with US dollars in 2019.
+
+1-2)
+Current account decreases by 15k, financial account decreases by 15k, capital account stays the same
+
+Argentinian professors, working in U.S. universities organize a conference in Buenos Aires with a cost of $15,000. They pay from their U.S. savings accounts.
+
+1-3)
+Current account decreases 300k, financial account decreases by 300k and capital account stays the same
+
+A German hedge-fund received from Apple stock-dividents equal to $300,000 and deposited to the fund's account in Deutsche Bank.
+
+1-4)
+Current account decreases by 50k, financial account decreases by 50k, and capital account stays the same
+
+A Californian winery buys sparkling wine in bulk from Chile and pays with a $50000 wire transfer
+
+1-5)
+There is no net change in any accoun (net unilateral transfer increases by 2b, trade balence decreases by 2b)
+
+The United States receives 3-month temporary foreign aid in the form of fighter jets with a cost of $2 billion dollars to deal with wildfires the months of June-August
+
+1-6)
+
+No accounts change (2m of one foreign asset was exchanged for 2m of another foreign asset)
+
+US investors buy $2-million worth real estate in Japan from a Chinese real-estate fund, paying from their account in Switzerland.
+
+
+# Question 2
+
+2-1)
+D
+
+2-2)
+C
+
+2-3)
+C
+
+2-4)
+D
+
+2-5)
+D (or A.  I think nothing happens which is the outcome of A, but A implies CA goes up then down.)
+
+2-6)
+D
+
+
+# Question 3: Consumption smoothing
+
+$$
+r = 5\%
+$$
+$$
+P_T^C = P^C
+$$
+$$
+C = C_1 = C_2 = ...
+$$
+$$
+P_1^XQ_1 + \frac{P_2^XQ_2}{1+r} + ... = P^CC*(1 + \frac{1}{1+r^*} + ...)
+$$
+$$
+P*Q(1-\frac{1}{4} + \frac{1}{1+r} + \frac{1}{(1+r)^2}+...) = P^CC(\frac{1+r}{r})
+$$
+$$
+1000*1000(\frac{1.05}{.05} - \frac{1}{4}) = 1000*C(\frac{1.05}{.05})
+$$
+```{r}
+x = 1.05/.05
+1000*1000*(x-.25)/1000/x
+```
+The new consumption rate is:
+$$
+C = 988.0952
+$$
+Trade balance is 750-988.1=-238.10 (*1000) in period 1, which is what they borrow.
+
+
+3-1)
+The price would permanently be 750 instead of 1000:
+$$
+750*1000(\frac{1.05}{.05}) = 1000*C(\frac{1.05}{.05})
+$$
+
+```{r}
+x = 1.05/.05
+750*1000*(x)/1000/x
+```
+
+The new consumption rate is:
+$$
+C = 750
+$$
+In this case, the country doesn't need to borrow, and has a trade balance of 0
+
+3-2)
+
+
+$$
+1000*750(\frac{1.05}{.05}) = 1000*C(\frac{1.05}{.05})
+$$
+
+```{r}
+x = 1.05/.05
+750*1000*(x
+          )/1000/x
+```
+
+The new consumption rate is:
+$$
+C = 750
+$$
+
+This case is identical to 3-1.
+
+# Question 4: Investment and the current account
+
+1. Consider a two-period model of a small open economy with a single good each period. Let preferences of the
+representative household be described by the utility function
+
+$$
+\ln(C_{1})+0.8 \ln(C_{2}), 
+$$ 
+
+where $C_{1}$ and $C_{2}$ denote consumption in periods 1 and 2, respectively, and $\ln$ denotes the natural logarithm. In period 1, the household receives an endowment of $Q_{1}=2$. In period 2, the household receives profits, denoted by $\Pi_{2}$, from the firms it owns. Households and firms have access to financial markets where they can borrow or lend at the interest rate $r^*$ ($r^*$ is the interest rate on assets held between periods 1 and 2.)
+
+Firms invest in period 1 to be able to produce goods in period 2. The production technology in period 2 is given by 
+
+$$Q_{2}=I_{1}^{0.6},$$
+
+where $Q_{2}$ and $I_{1}$ denote, respectively, output in period 2 and investment in period 1. Assume that there exists free international capital mobility and that the world interest rate, $r^{*}$, is 4% per period (i.e., $r^{*} = 0.04$). Finally, assume that the economy's initial NIIP is zero ($B_{0}=0$).
+
+1. Compute the firm's optimal levels of period-1 investment and period-2 profits.
+
+Tips:
+
+$$
+\frac{dF(I_{1})}{dI_{1}}=1+r^{*} \Rightarrow
+$$
+
+```{r}
+r  <- 0.04
+B0 <- 0
+I1 <- (0.6/(1+r))^(1/0.4)
+round(I1,3)
+```
+
+The optimal period-1 investment rate is `r round(I1,3)`. You can continue with the solution as:
+
+
+```{r}
+profit = I1^.6 - (1+r)*I1
+profit
+```
+
+2. State the maximization problem of the representative household and solve for the optimal levels of consumption in periods 1 and 2.
+$$
+\max  ln(C_1) + .8ln(C_2)
+$$
+$$
+\text{subject to} 
+$$
+$$
+C_1 + \frac{C_2}{1+r} = Q_1 - I_1 + \frac{Q_2}{1+r}
+$$
+$$
+C_2 = (Q_1 - I_1 + \frac{Q_2}{1+r} - C_1) * (1+r)
+$$
+
+```{r}
+Q2 = I1^.6
+Q1 = 2
+round(Q1-I1+Q2/(1+r),3)
+```
+
+$$
+C_2 = (2.169 - C_1)*(1+r)
+$$
+
+$$
+\text{Substitute} \ C_2 \ \text{into the maximization problem}
+$$
+$$
+\max ln(C_1) + .8ln((2.169 - C_1)*(1+r))
+$$
+$$
+\text{FOC} [C_1] \ \frac{1}{C_1} + \frac{.8}{(C_1 - 2.169)}
+$$
+$$
+C_1 = 1.214
+$$
+$$
+C_2 = (2.169 - 1.214)*(1.04)
+$$
+$$
+C_2 = .993
+$$
+
+
+3. Find the country's net foreign asset position at the end of period 1, the trade balance in periods 1 and 2, and the current account in periods 1 and 2.
+
+$$
+TB_1 = Q_1-C_1-I_1 = 2-1.214-.253 = .533
+$$
+$$
+TB_2 = Q_2-C_2 = -.555
+$$
+$$
+CA_1 = S_1 - I_1 = Q_1 - C_1 - I_1 = .533
+$$
+$$
+CA_2 = S_2 - I_2 = Q_2-C_2-I_2 = -.555
+$$
+$$
+\Delta NIIP_1 = CA_1+KA_1+Valuation\Delta = .533
+$$
+`r round(2-1.214-.253,3)`
+`r round(Q2-.993,3)`
+`r round(Q2-.993-0,3)`
+
+
+4. Now consider an investment surge. Specifically, assume that as a result of a technological improvement, the production technology becomes 
+
+$$
+Q_{2}=1.2I_{1}^{0.6}.
+$$ 
+
+Find the equilibrium levels of savings, investment, the trade balance, the current account, and the country's NIIP in period 1.
+
+```{r}
+r  <- 0.04
+B0 <- 0
+I1 <- ((1.2)*0.6/(1+r))^(1/0.4)
+round(I1,3)
+```
+
+```{r}
+Q2 = 1.2*I1^.6
+Q1 = 2
+round(Q1-I1+Q2/(1+r),3)
+```
+
+$$
+C_2 = (2.266 - C_1)*(1+r)
+$$
+
+$$
+\text{Substitute} \ C_2 \ \text{into the maximization problem}
+$$
+$$
+\max ln(C_1) + .8ln((2.266 - C_1)*(1+r))
+$$
+$$
+\text{FOC} [C_1] \ \frac{1}{C_1} + \frac{.8}{(C_1 - 2.266)}
+$$
+$$
+C_1 = 1.259
+$$
+$$
+C_2 = (2.266 - 1.259)*(1.04)
+$$
+$$
+C_2 = 1.047
+$$
+`r round((2.266 - 1.259)*(1.04),3)`
+(Find the equilibrium levels of savings, investment, the trade balance, the current account, and the country's NIIP in period 1.)
+$$
+S_1 = Q_1-C_1 = .741
+$$
+$$
+I_1 = .399
+$$
+$$
+TB_1 = Q_1-C_1-I_1 = 2-1.259-.399 = .342
+$$
+$$
+CA_1 = S_1 - I_1 = Q_1 - C_1 - I_1 = .342
+$$
+$$
+\Delta NIIP_1 = CA_1+KA_1+Valuation\Delta = .342
+$$
+
+```{r}
+C1 = 1.259
+round(Q1-C1,3)
+round(2-1.259-.399,3)
+```
+5. Compare your results with those obtained in items 1.3. providing interpretation and intuition.
+
+Investment increased due to the technology shock, leading to a savings decrease with the expectation of increased income on investment, and a consumption increase.  Less was sold externally, and less domestic capital was sold.
+
+
+
+# Question 5. Measuring the marginal product of capital:
+
+In this exercise, based on a seminal paper by Caselli and Feyrer (2007), we study the determinants of capital investment returns across countries. We consider a standard neoclassical economy featuring a constant-returns to scale production technology and perfectly competitive good and factor markets. In a neoclassical economy with a homogenous and movable capital stock, the real return on capital, $r_{k}$, is equalized with the marginal product of capital since factors are being paid their marginal contribution. Given measures of the capital share $\alpha_{K}$, the real capital stock, $K$, real GDP, $Y$ and the respective prices $P_{K}$ and $P_{Y}$, the return on capital is given by
+
+$$
+r_{K}=\alpha_{K}\frac{P_{Y}Y}{P_{K}K}.
+$$
+
+1. In the absence of international capital flows, countries can have different returns on capital, given in expression [eq:rk]. Which variables shape differences in the return to capital across countries? 
+
+Prices, capital share, and capital stock will shape differences in the return to capital.
+
+2. With frictionless international capital market, the return on capital investment in each country should be equal to
+$$ i^{*}+\delta_{K}$$
+
+where $i^{*}$ is the world interest rate and $\delta_{K}$ is the depreciation rate of capital which is common across countries. What variables determine the direction of capital flows when countries open up to frictionless capital flows?
+
+Labor productivity ($A$), marginal product of capital, output elasticity of capital ($\beta$)
+
+
+You are provided with data on $Y , K, P_{Y}, and P_{K}$ and the labor share of income $\alpha_{L}$ from Version 9.0. of the Penn World Tables (PWT, Feenstra, Robert C., Robert Inklaar and Marcel P. Timmer (2015)). Using the data, calculate $a_{K}$ as $1-\alpha_{L}$, where $\alpha_{L}$ the measured labor share. Then calculate the return on capital investment $r_{K}$ using the the expression for the return to capital given above.
+
+
+1. Create a plot of the time series of the marginal product of capital for each country, using your calculations for Mexico, Paraguay, France, and Germany. Discuss your results briefly.
+
+Complete the chunk below
+```{r}
+library(tidyverse)
+# Be careful, you need to know where your data reside. If they are in the same folder as you document, use:
+CFdata<-read.csv("C:/Users/rossw/Documents/MAE Program/Q3/Globalization/dataCF.csv")
+CFdata = na.omit(CFdata)
+#head(CFdata)
+# Calculate capital share
+CFdata$capshw<-1-CFdata$labsh
+
+# Calculate marginal product of capital
+#capital share * (price y * y)/(price k * k)
+CFdata$PMPKN = CFdata$capshw*((CFdata$rgdpo*CFdata$pl_gdpo)/(CFdata$rkna*CFdata$pl_i))
+  
+  
+# or if you use dplyr
+# CFdata<-CFdata %>% mutate(PMPKN = )
+
+listCountries <- c("Mexico","Paraguay","France","Germany")
+#PMPKN         <-
+# Plot the variables
+
+CFdata %>% filter(country %in% listCountries) %>% 
+  ggplot(data = ., mapping = aes(x = year, y = PMPKN, color = country)) +
+    geom_line() +
+    labs(x = "year", y = "Marginal Product of Capital", color = "Country")
+
+```
+
+2. Create an additional plot of the dynamics of the marginal product of capital for each country, calculated
+assuming that in each country the ratio of prices of capital and output Y is 1, that is
+
+$$
+r^{'}_{K}=\alpha_{K}\frac{Y}{K}.
+$$
+
+```{r}
+CFdata$DMPK = CFdata$capshw*((CFdata$rgdpo)/(CFdata$rkna))
+
+CFdata %>% filter(country %in% listCountries) %>% 
+  ggplot(data = ., mapping = aes(x = year, y = DMPK, color = country)) +
+    geom_line() +
+    labs(x = "year", y = "Marginal Product of Capital", color = "Country")
+
+```
+
+
+Are the two measures substantially different? Report the 5 countries with the largest differential
+$r_{K} - r^{'}_{K}$.
+
+The relative changes in MPK do differ over time.  For example, you can see that the spike in MPK in Mexico in the 90's was due to price.
+
+```{r}
+CFdata$rdif = abs(CFdata$PMPKN - CFdata$DMPK)
+
+head(arrange(aggregate(CFdata$rdif, list(CFdata$country), mean),desc(x)),n=5)
+
+#head(arrange(CFdata,desc(rdif)), n = 5)
+```
+
+Guinea, Bulgaria, Chad, Sudan, and Kuwait have the largest average difference.
+
+
+3. How would you test the hypothesis of a frictionless international capital market, using the data provided, i.e. measures of rk across countries.
+
+I would test if rk's equalize.  That is to say that high rk's would move toward the average over time, or that the differences between rk's is close to 0.
+
+4. Separate countries into 5 groups, based on the level of $Y$ in 1980, and calculate the average $r_K$ for each
+group.  Discuss if the assumption of a frictionless international capital market in the data is satisfied?
+Repeat using $r^{'}_{K}$  instead. Explain, what might be a problem if a researcher is not accounting for
+differences in $P_K/P_Y$ across countries.
+
+
+```{r}
+# 1. Calculate output per capita:
+CFdata$y_l<-CFdata$rgdpo/CFdata$pop
+#head(CFdata)
+
+# Create an index based on the level of development
+#  tidyverse 
+DevIndex<-CFdata %>% filter(year ==1980) %>% mutate(devInd = ntile(y_l, 5)) %>% select(country,devInd)
+CFdata <- merge(CFdata,DevIndex,by=c("country"))
+#head(CFdata)
+Table1 <- CFdata %>% group_by(devInd) %>% summarise(DMPK = mean(DMPK, na.rm = TRUE),PMPKN = mean(PMPKN, na.rm = TRUE))
+Table1
+```
+
+If a researcher doesn't account for prices, Marginal Product of Capital appears to be much higher in low GDP countries.  It appears that friction is less of a problem after this control because MPK doesn't differ too much from group to group.
+
+5. [Bonus question: Throughout, we assumed that $\alpha_K = 1 - \alpha_L$, to calculate MPK. What assumption
+is needed so that the measured MPK and real MPK are equal? In which economies would you expect
+this discrepancy to be larger? What does this mean for the analysis above].
+
+There are a few things we'd need to be sure of to trust our measure of MPK.  For example, foreign investments can't count toward gdp, our measurement of gdp must be accurate (as well as income from labor), the price of capital doesn't vary as well as the returns on capital, mobility of capital, and depreciation need to be accounted for.  Price of capital/capital mobility might be the largest discrepancy, making developed countries have the largest discrepency because land is an important factor of production for them.  This might mean that our analysis favors developed countries after the control.
+
+ 

@@ -1,0 +1,21 @@
+---
+title: "Econometrics Project 3"
+author: "Ross Lewis, Adam Jacobson, David Contento"
+date: "February 19, 2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+setwd('C:/Users/rossw/Documents/MAE Program/Q2/Applied Econometrics 403B/Project 3')
+#fixed width file
+women = read.fwf('fertil1.raw',c(9,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11))
+head(women)
+
+```
+
