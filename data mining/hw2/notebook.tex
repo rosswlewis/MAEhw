@@ -141,7 +141,7 @@
     \def\gt{>}
     \def\lt{<}
     % Document parameters
-    \title{Homework1}
+    \title{Homework 2}
     
     
     
@@ -280,330 +280,504 @@
     
 
     
-    \hypertarget{data-mining-homework-1}{%
-\section{Data Mining Homework 1}\label{data-mining-homework-1}}
+    \hypertarget{homework-2}{%
+\section{Homework 2}\label{homework-2}}
 
-\hypertarget{ross-lewis}{%
-\paragraph{Ross Lewis}\label{ross-lewis}}
+Data Mining Ross Lewis
 
-\hypertarget{part-i}{%
-\subsection{Part I}\label{part-i}}
-
-1.1
-
-The following program is used to sort the list according to the second
-element in the sublist. Please complete the missing lines.
+\hypertarget{question-1}{%
+\paragraph{Question 1}\label{question-1}}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{a}\PY{o}{=}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{A}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mi}{34}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{B}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mi}{21}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{C}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mi}{26}\PY{p}{]}\PY{p}{]}
-        \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{)}\PY{p}{:}
-            \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
-                \PY{k}{if}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{\PYZgt{}}\PY{n}{a}\PY{p}{[}\PY{n}{j}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{:}
-                    \PY{n}{temp}\PY{o}{=}\PY{n}{a}\PY{p}{[}\PY{n}{j}\PY{p}{]}
-                    \PY{n}{a}\PY{p}{[}\PY{n}{j}\PY{p}{]} \PY{o}{=} \PY{n}{a}\PY{p}{[}\PY{n}{j}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}
-                    \PY{n}{a}\PY{p}{[}\PY{n}{j}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{temp}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}1}]:} \PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+        \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+        \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{image} \PY{k}{as} \PY{n+nn}{mpimg}
+        \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+        
+        \PY{n}{numImages} \PY{o}{=} \PY{l+m+mi}{16}
+        \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{7}\PY{p}{)}\PY{p}{)}
+        \PY{n}{imgData} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{shape}\PY{o}{=}\PY{p}{(}\PY{n}{numImages}\PY{p}{,}\PY{l+m+mi}{36963}\PY{p}{)}\PY{p}{)}
+        
+        \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{numImages}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+            \PY{n}{filename} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pics/Picture}\PY{l+s+s1}{\PYZsq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.jpg}\PY{l+s+s1}{\PYZsq{}}
+            \PY{n}{img} \PY{o}{=} \PY{n}{mpimg}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{filename}\PY{p}{)}
+            \PY{n}{ax} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{n}{i}\PY{p}{)}
+            \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img}\PY{p}{)}
+            \PY{n}{plt}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}
+            \PY{n}{imgData}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{img}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{img}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{*}\PY{n}{img}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{*}\PY{n}{img}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_1_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
     \begin{Verbatim}[commandchars=\\\{\}]
-[['B', 21], ['C', 26], ['A', 34]]
-
-    \end{Verbatim}
-
-    1.2
-
-The following program is used to clean up the string and remove all the
-punctuation marks. Please complete the missing lines.
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}7}]:} \PY{c+c1}{\PYZsh{} define punctuation}
-        \PY{n}{punctuations} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}\PYZsq{}\PYZsq{}}\PY{l+s+s1}{!()\PYZhy{}[]}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{;:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{,\PYZlt{}\PYZgt{}./?@\PYZsh{}\PYZdl{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZca{}\PYZam{}*\PYZus{}\PYZti{}}\PY{l+s+s1}{\PYZsq{}\PYZsq{}\PYZsq{}}
+{\color{incolor}In [{\color{incolor}2}]:} \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{decomposition} \PY{k}{import} \PY{n}{PCA}
         
-        \PY{n}{my\PYZus{}str} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hello!!!, he said \PYZhy{}\PYZhy{}\PYZhy{}and went.}\PY{l+s+s2}{\PYZdq{}}
+        \PY{n}{numComponents} \PY{o}{=} \PY{l+m+mi}{2}
         
-        \PY{c+c1}{\PYZsh{} To take input from the user}
-        \PY{c+c1}{\PYZsh{} my\PYZus{}str = input(\PYZdq{}Enter a string: \PYZdq{})}
+        \PY{n}{pca} \PY{o}{=} \PY{n}{PCA}\PY{p}{(}\PY{n}{numComponents}\PY{p}{)}
+        \PY{n}{pca}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{imgData}\PY{p}{)}
+        \PY{n}{projected} \PY{o}{=} \PY{n}{pca}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{imgData}\PY{p}{)}
         
-        \PY{c+c1}{\PYZsh{} remove punctuation from the string}
-        \PY{n}{no\PYZus{}punct} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}
-        \PY{k}{for} \PY{n}{char} \PY{o+ow}{in} \PY{n}{my\PYZus{}str}\PY{p}{:}
-            \PY{k}{if}\PY{p}{(}\PY{o+ow}{not} \PY{n}{char} \PY{o+ow}{in} \PY{n}{punctuations}\PY{p}{)}\PY{p}{:}
-                \PY{n}{no\PYZus{}punct} \PY{o}{=} \PY{n}{no\PYZus{}punct} \PY{o}{+} \PY{n}{char}
-        
-        \PY{c+c1}{\PYZsh{} display the unpunctuated string}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{no\PYZus{}punct}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-Hello he said and went
-
-    \end{Verbatim}
-
-    1.3
-
-Complete the following program to multiply two matrices using nested
-loops.
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}8}]:} \PY{n+nb}{sum}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}
+        \PY{n}{projected} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{projected}\PY{p}{,}\PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pc1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pc2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{index}\PY{o}{=}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{numImages}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+        \PY{n}{projected}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{food}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{burger}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{burger}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{burger}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{burger}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{drink}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{drink}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{drink}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{drink}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                              \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pasta}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pasta}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pasta}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pasta}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{chicken}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{chicken}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{chicken}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{chicken}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+        \PY{n}{projected}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}8}]:} 3
+{\color{outcolor}Out[{\color{outcolor}2}]:}              pc1          pc2     food
+        1   -1576.667016  6641.462674   burger
+        2    -493.825788  6396.184274   burger
+        3     990.057233  7236.840769   burger
+        4    2189.898458  9051.034582   burger
+        5   -7843.064019 -1061.583683    drink
+        6   -8498.435161 -5438.442879    drink
+        7  -11181.787910 -5319.885107    drink
+        8   -6851.941725  1124.542067    drink
+        9    7635.140046 -5043.628374    pasta
+        10   -708.061138  -528.765053    pasta
+        11   7236.249736 -5301.766423    pasta
+        12   4417.335795 -4659.524969    pasta
+        13  11864.507522  1472.188629  chicken
+        14     76.468838  1366.295780  chicken
+        15  -7505.666465 -1163.706654  chicken
+        16  10249.791595 -4771.245634  chicken
+\end{Verbatim}
+            
+    Finally, we draw a scatter plot to display the projected values. Observe
+that the images of burgers, drinks, and pastas are all projected to the
+same region. However, the images for fried chicken (shown as black
+squares in the diagram) are harder to discriminate.
+
+\textbf{Code:}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+         
+         \PY{n}{colors} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{burger}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{drink}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pasta}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{chicken}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+         \PY{n}{markerTypes} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{burger}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{+}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{drink}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pasta}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{chicken}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+         
+         \PY{k}{for} \PY{n}{foodType} \PY{o+ow}{in} \PY{n}{markerTypes}\PY{p}{:}
+             \PY{n}{d} \PY{o}{=} \PY{n}{projected}\PY{p}{[}\PY{n}{projected}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{food}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{==}\PY{n}{foodType}\PY{p}{]}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{d}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pc1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{d}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pc2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{marker}\PY{o}{=}\PY{n}{markerTypes}\PY{p}{[}\PY{n}{foodType}\PY{p}{]}\PY{p}{,}\PY{n}{c}\PY{o}{=}\PY{n}{colors}\PY{p}{[}\PY{n}{foodType}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_4_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{extra-credit}{%
+\subsubsection{Extra Credit}\label{extra-credit}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}107}]:} \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+          
+          \PY{n}{prof} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{country\PYZus{}profile\PYZus{}variables.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{c+c1}{\PYZsh{}prof.select\PYZus{}dtypes([\PYZsq{}number\PYZsq{}]).head()}
+          \PY{c+c1}{\PYZsh{}prof = pd.concat([profDat[\PYZsq{}Region\PYZsq{}],prof.select\PYZus{}dtypes([\PYZsq{}number\PYZsq{}])],axis=1)}
+          \PY{n}{prof}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}107}]:}           country          Region Surface area (km2)  \textbackslash{}
+          0     Afghanistan    SouthernAsia             652864   
+          1         Albania  SouthernEurope              28748   
+          2         Algeria  NorthernAfrica            2381741   
+          3  American Samoa       Polynesia                199   
+          4         Andorra  SouthernEurope                468   
+          
+             Population in thousands (2017)  Population density (per km2, 2017)  \textbackslash{}
+          0                           35530                                54.4   
+          1                            2930                               106.9   
+          2                           41318                                17.3   
+          3                              56                               278.2   
+          4                              77                               163.8   
+          
+             Sex ratio (m per 100 f, 2017)  \textbackslash{}
+          0                          106.3   
+          1                          101.9   
+          2                          102.0   
+          3                          103.6   
+          4                          102.3   
+          
+             GDP: Gross domestic product (million current US\$)  \textbackslash{}
+          0                                              20270   
+          1                                              11541   
+          2                                             164779   
+          3                                                -99   
+          4                                               2812   
+          
+            GDP growth rate (annual \%, const. 2005 prices)  \textbackslash{}
+          0                                           -2.4   
+          1                                            2.6   
+          2                                            3.8   
+          3                                            -99   
+          4                                            0.8   
+          
+             GDP per capita (current US\$) Economy: Agriculture (\% of GVA)  {\ldots}  \textbackslash{}
+          0                         623.2                            23.3  {\ldots}   
+          1                        3984.2                            22.4  {\ldots}   
+          2                        4154.1                            12.2  {\ldots}   
+          3                         -99.0                             -99  {\ldots}   
+          4                       39896.4                             0.5  {\ldots}   
+          
+             Mobile-cellular subscriptions (per 100 inhabitants).1  \textbackslash{}
+          0                                                8.3       
+          1                                               63.3       
+          2                                               38.2       
+          3                                                -99       
+          4                                               96.9       
+          
+             Individuals using the Internet (per 100 inhabitants)  \textbackslash{}
+          0                                                 42      
+          1                                                130      
+          2                                                135      
+          3                                                 92      
+          4                                                 13      
+          
+            Threatened species (number) Forested area (\% of land area)  \textbackslash{}
+          0                         2.1                        9.8/0.3   
+          1                        28.2                        5.7/2.0   
+          2                         0.8                      145.4/3.7   
+          3                        87.9                            -99   
+          4                        34.0                        0.5/6.4   
+          
+            CO2 emission estimates (million tons/tons per capita)  \textbackslash{}
+          0                                                 63      
+          1                                                 84      
+          2                                               5900      
+          3                                                -99      
+          4                                                  1      
+          
+            Energy production, primary (Petajoules)  \textbackslash{}
+          0                                       5   
+          1                                      36   
+          2                                      55   
+          3                                     -99   
+          4                                     119   
+          
+            Energy supply per capita (Gigajoules)  \textbackslash{}
+          0                             78.2/47.0   
+          1                             94.9/95.2   
+          2                             84.3/81.8   
+          3                           100.0/100.0   
+          4                           100.0/100.0   
+          
+             Pop. using improved drinking water (urban/rural, \%)  \textbackslash{}
+          0                                          45.1/27.0     
+          1                                          95.5/90.2     
+          2                                          89.8/82.2     
+          3                                          62.5/62.5     
+          4                                        100.0/100.0     
+          
+             Pop. using improved sanitation facilities (urban/rural, \%)  \textbackslash{}
+          0                                              21.43            
+          1                                               2.96            
+          2                                               0.05            
+          3                                                -99            
+          4                                                -99            
+          
+            Net Official Development Assist. received (\% of GNI)  
+          0                                                -99    
+          1                                                -99    
+          2                                                -99    
+          3                                                -99    
+          4                                                -99    
+          
+          [5 rows x 50 columns]
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}17}]:} \PY{c+c1}{\PYZsh{} Program to multiply two matrices using nested loops}
-         
-         \PY{c+c1}{\PYZsh{} 3x3 matrix}
-         \PY{n}{X} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,}
-             \PY{p}{[}\PY{l+m+mi}{4} \PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{]}\PY{p}{,}
-             \PY{p}{[}\PY{l+m+mi}{7} \PY{p}{,}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{]}\PY{p}{]}
-         \PY{c+c1}{\PYZsh{} 3x4 matrix}
-         \PY{n}{Y} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,}
-             \PY{p}{[}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
-             \PY{p}{[}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}
-         
-         \PY{c+c1}{\PYZsh{} result is 3x4}
-         \PY{n}{result} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
-                  \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
-                  \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}
-         
-         \PY{c+c1}{\PYZsh{} iterate through rows of X}
-         \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{p}{)}\PY{p}{:}
-            \PY{c+c1}{\PYZsh{} iterate through columns of Y}
-            \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{Y}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{:}
-                 \PY{c+c1}{\PYZsh{} iterate through rows of Y}
-                 \PY{c+c1}{\PYZsh{}for all values in the x row, multiply by the correspoding value in the Y column}
-                 \PY{n}{runningTotal} \PY{o}{=} \PY{l+m+mi}{0}
-                 \PY{k}{for} \PY{n}{index} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{p}{)}\PY{p}{:}
-                     \PY{n}{runningTotal} \PY{o}{=} \PY{n}{runningTotal} \PY{o}{+} \PY{n}{X}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{*}\PY{n}{Y}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{[}\PY{n}{j}\PY{p}{]}
-                 \PY{n}{result}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{n}{j}\PY{p}{]} \PY{o}{=} \PY{n}{runningTotal}
-         
-         \PY{k}{for} \PY{n}{r} \PY{o+ow}{in} \PY{n}{result}\PY{p}{:}
-             \PY{n+nb}{print}\PY{p}{(}\PY{n}{r}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}108}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k}{import} \PY{n}{normalize}
+          
+          \PY{n}{numComponents} \PY{o}{=} \PY{l+m+mi}{2}
+          
+          \PY{n}{pca} \PY{o}{=} \PY{n}{PCA}\PY{p}{(}\PY{n}{numComponents}\PY{p}{)}
+          \PY{c+c1}{\PYZsh{}data = normalize(prof.select\PYZus{}dtypes([\PYZsq{}number\PYZsq{}]), axis=0, norm=\PYZsq{}max\PYZsq{})}
+          \PY{n}{pca}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{normalize}\PY{p}{(}\PY{n}{prof}\PY{o}{.}\PY{n}{select\PYZus{}dtypes}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{number}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{norm}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{max}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+          \PY{n}{projected} \PY{o}{=} \PY{n}{pca}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{normalize}\PY{p}{(}\PY{n}{prof}\PY{o}{.}\PY{n}{select\PYZus{}dtypes}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{number}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{norm}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{max}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+          
+          \PY{n}{projected} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{projected}\PY{p}{,}\PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pc1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pc2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{index}\PY{o}{=}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{prof}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+          \PY{n}{projected}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{region}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{prof}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Region}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+          \PY{n}{projected}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}108}]:}         pc1       pc2          region
+          0 -1.225279  0.101471    SouthernAsia
+          1 -1.080330  0.048536  SouthernEurope
+          2 -1.221848 -0.069134  NorthernAfrica
+          3  5.664929  0.996393       Polynesia
+          4 -1.125041  0.017737  SouthernEurope
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}115}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n}{projected}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{region}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+          
+          \PY{k}{for} \PY{n}{reg} \PY{o+ow}{in} \PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n}{projected}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{region}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+              \PY{n}{d} \PY{o}{=} \PY{n}{projected}\PY{p}{[}\PY{n}{projected}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{region}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{==}\PY{n}{reg}\PY{p}{]}
+              
+              \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{d}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pc1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{d}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pc2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-[114, 160, 60, 27]
-[74, 97, 73, 14]
-[119, 157, 112, 23]
+22
 
     \end{Verbatim}
 
-    \hypertarget{part-ii}{%
-\subsection{Part II}\label{part-ii}}
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_8_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Above is the normalized data projected onto two dimensions with
+different regions labaled by color.
 
-2.1
+    \hypertarget{question-2}{%
+\paragraph{Question 2}\label{question-2}}
 
-For each of the three flower categories, please quantize the petal width
-into 10 bins, and account the frequency of each bin, i.e., generating a
-1-D histogram. Compare the three histograms side by side and explain
-your observations. You may use the function hist() or write your codes
-to implement the above objective.
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}22}]:} \PY{k+kn}{import} \PY{n+nn}{pandas}
-         \PY{n}{iris} \PY{o}{=} \PY{n}{pandas}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{iris.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-\end{Verbatim}
-
+\hypertarget{decision-tree}{%
+\subsection{Decision Tree}\label{decision-tree}}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}23}]:} \PY{n}{iris}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}24}]:} \PY{c+c1}{\PYZsh{} Load the dataset}
+         
+         \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+         
+         \PY{n}{data} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{vertebrate.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{header}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{infer}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{data}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}23}]:}    sepal\_length  sepal\_width  petal\_length  petal\_width species
-         0           5.1          3.5           1.4          0.2  setosa
-         1           4.9          3.0           1.4          0.2  setosa
-         2           4.7          3.2           1.3          0.2  setosa
-         3           4.6          3.1           1.5          0.2  setosa
-         4           5.0          3.6           1.4          0.2  setosa
+{\color{outcolor}Out[{\color{outcolor}24}]:}              Name  Warm-blooded  Gives Birth  Aquatic Creature  \textbackslash{}
+         0           human             1            1                 0   
+         1          python             0            0                 0   
+         2          salmon             0            0                 1   
+         3           whale             1            1                 1   
+         4            frog             0            0                 1   
+         5          komodo             0            0                 0   
+         6             bat             1            1                 0   
+         7          pigeon             1            0                 0   
+         8             cat             1            1                 0   
+         9   leopard shark             0            1                 1   
+         10         turtle             0            0                 1   
+         11        penguin             1            0                 1   
+         12      porcupine             1            1                 0   
+         13            eel             0            0                 1   
+         14     salamander             0            0                 1   
+         
+             Aerial Creature  Has Legs  Hibernates       Class  
+         0                 0         1           0     mammals  
+         1                 0         0           1    reptiles  
+         2                 0         0           0      fishes  
+         3                 0         0           0     mammals  
+         4                 0         1           1  amphibians  
+         5                 0         1           0    reptiles  
+         6                 1         1           1     mammals  
+         7                 1         1           0       birds  
+         8                 0         1           0     mammals  
+         9                 0         0           0      fishes  
+         10                0         1           0    reptiles  
+         11                0         1           0       birds  
+         12                0         1           1     mammals  
+         13                0         0           0      fishes  
+         14                0         1           1  amphibians  
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}34}]:} \PY{n}{iris}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{species}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}28}]:} \PY{c+c1}{\PYZsh{} Pre\PYZhy{}processing data}
+         
+         \PY{c+c1}{\PYZsh{} convert the classes to be binary: replacing fishes, birds, amphibians and retiles as non\PYZhy{}mammals}
+         
+         \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Class}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Class}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mammals}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mammals}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{non\PYZhy{}mammals}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{data}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}34}]:} array(['setosa', 'versicolor', 'virginica'], dtype=object)
+{\color{outcolor}Out[{\color{outcolor}28}]:}              Name  Warm-blooded  Gives Birth  Aquatic Creature  \textbackslash{}
+         0           human             1            1                 0   
+         1          python             0            0                 0   
+         2          salmon             0            0                 1   
+         3           whale             1            1                 1   
+         4            frog             0            0                 1   
+         5          komodo             0            0                 0   
+         6             bat             1            1                 0   
+         7          pigeon             1            0                 0   
+         8             cat             1            1                 0   
+         9   leopard shark             0            1                 1   
+         10         turtle             0            0                 1   
+         11        penguin             1            0                 1   
+         12      porcupine             1            1                 0   
+         13            eel             0            0                 1   
+         14     salamander             0            0                 1   
+         
+             Aerial Creature  Has Legs  Hibernates        Class  
+         0                 0         1           0      mammals  
+         1                 0         0           1  non-mammals  
+         2                 0         0           0  non-mammals  
+         3                 0         0           0      mammals  
+         4                 0         1           1  non-mammals  
+         5                 0         1           0  non-mammals  
+         6                 1         1           1      mammals  
+         7                 1         1           0  non-mammals  
+         8                 0         1           0      mammals  
+         9                 0         0           0  non-mammals  
+         10                0         1           0  non-mammals  
+         11                0         1           0  non-mammals  
+         12                0         1           1      mammals  
+         13                0         0           0  non-mammals  
+         14                0         1           1  non-mammals  
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}46}]:} \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{iris}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{iris}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{species}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{setosa}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}width}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Petal Width of Setosa}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Petal Width}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Frequency}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{iris}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{iris}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{species}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{versicolor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}width}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Petal Width of Versicolor}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Petal Width}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Frequency}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{iris}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{iris}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{species}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{virginica}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}width}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Petal Width of Virginica}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Petal Width}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Frequency}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}29}]:} \PY{c+c1}{\PYZsh{} Pandas provides a function cross\PYZhy{}tabulation that can examine the relationship between the Warm\PYZhy{}blooded and Gives Birth attributes with respect to the class.}
+         \PY{n}{pd}\PY{o}{.}\PY{n}{crosstab}\PY{p}{(}\PY{p}{[}\PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Warm\PYZhy{}blooded}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Gives Birth}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{,}\PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Class}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_11_0.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_11_1.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_11_2.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}29}]:} Class                     mammals  non-mammals
+         Warm-blooded Gives Birth                      
+         0            0                  0            7
+                      1                  0            1
+         1            0                  0            2
+                      1                  5            0
+\end{Verbatim}
+            
+    The results above show that it is possible to distinguish mammals from
+non-mammals using these two attributes alone since each combination of
+their attribute values would yield only instances that belong to the
+same class. For example, mammals can be identified as warm-blooded
+vertebrates that give birth to their young. Such a relationship can also
+be derived using a decision tree classifier, as shown by the example
+given in the next subsection.
+
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}50}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{iris}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{iris}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{species}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{setosa}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}width}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Setosa}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{iris}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{iris}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{species}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{versicolor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}width}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Versicolor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{iris}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{iris}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{species}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{virginica}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}width}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Virginica}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Petal Width of All Iris}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Petal Width}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Frequency}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}58}]:} \PY{c+c1}{\PYZsh{} apply a decision tree classifier to the vertebrate dataset described in the previous subsection.}
+         
+         \PY{k+kn}{from} \PY{n+nn}{sklearn} \PY{k}{import} \PY{n}{tree}
+         
+         \PY{n}{Y} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Class}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{n}{X} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Class}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+         
+         \PY{n}{clf} \PY{o}{=} \PY{n}{tree}\PY{o}{.}\PY{n}{DecisionTreeClassifier}\PY{p}{(}\PY{n}{criterion}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gini}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{splitter}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{random}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{max\PYZus{}depth}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{min\PYZus{}samples\PYZus{}split}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{min\PYZus{}samples\PYZus{}leaf}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{clf} \PY{o}{=} \PY{n}{clf}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{)}
 \end{Verbatim}
 
 
+    The preceding commands will extract the predictor (X) and target class
+(Y) attributes from the vertebrate dataset and create a decision tree
+classifier object using entropy as its impurity measure for splitting
+criterion. The decision tree class in Python sklearn library also
+supports using `gini' as impurity measure. The classifier above is also
+constrained to generate trees with a maximum depth equals to 3. Next,
+the classifier is trained on the labeled data using the fit() function.
+
+We can plot the resulting decision tree obtained after training the
+classifier. To do this, you must first install both graphviz
+(http://www.graphviz.org) and its Python interface called pydotplus
+(http://pydotplus.readthedocs.io/).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}59}]:} \PY{c+c1}{\PYZsh{} visualizing the tree}
+         
+         \PY{k+kn}{import} \PY{n+nn}{pydotplus} 
+         \PY{k+kn}{from} \PY{n+nn}{IPython}\PY{n+nn}{.}\PY{n+nn}{display} \PY{k}{import} \PY{n}{Image}
+         
+         \PY{n}{dot\PYZus{}data} \PY{o}{=} \PY{n}{tree}\PY{o}{.}\PY{n}{export\PYZus{}graphviz}\PY{p}{(}\PY{n}{clf}\PY{p}{,} \PY{n}{feature\PYZus{}names}\PY{o}{=}\PY{n}{X}\PY{o}{.}\PY{n}{columns}\PY{p}{,} \PY{n}{class\PYZus{}names}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mammals}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{non\PYZhy{}mammals}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{filled}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} 
+                                         \PY{n}{out\PYZus{}file}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)} 
+         \PY{n}{graph} \PY{o}{=} \PY{n}{pydotplus}\PY{o}{.}\PY{n}{graph\PYZus{}from\PYZus{}dot\PYZus{}data}\PY{p}{(}\PY{n}{dot\PYZus{}data}\PY{p}{)} 
+         \PY{n}{Image}\PY{p}{(}\PY{n}{graph}\PY{o}{.}\PY{n}{create\PYZus{}png}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+\texttt{\color{outcolor}Out[{\color{outcolor}59}]:}
+    
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_12_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_17_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
-    The setosa iris is the smallest of the three. Versicolor has a medium
-petal width, with some overlap with virginica. Virginica has the widest
-petal of the iris's being compared.
 
-2.2
-
-For each of the three categories, generate a 2D histogram
+    Next, suppose we apply the decision tree to classify the following test
+examples.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}86}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{hist2d}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{iris}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{iris}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{species}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{setosa}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}length}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{,}
-                    \PY{n}{y}\PY{o}{=}\PY{n}{iris}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{iris}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{species}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{setosa}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}width}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{,}
-                    \PY{n+nb}{range}\PY{o}{=}\PY{p}{[}\PY{p}{[}\PY{o}{.}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{.}\PY{l+m+mi}{75}\PY{p}{]}\PY{p}{]}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Petal Width vs Petal Length of Setosa}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Petal Length}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Petal Width}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{hist2d}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{iris}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{iris}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{species}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{versicolor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}length}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{,}
-                    \PY{n}{y}\PY{o}{=}\PY{n}{iris}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{iris}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{species}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{versicolor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}width}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{,}
-                    \PY{n+nb}{range}\PY{o}{=}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mf}{5.5}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{o}{.}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{]}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Petal Width vs Petal Length of Versicolor}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Petal Length}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Petal Width}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{hist2d}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{iris}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{iris}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{species}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{virginica}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}length}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{,}
-                    \PY{n}{y}\PY{o}{=}\PY{n}{iris}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{iris}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{species}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{virginica}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}width}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{,}
-                    \PY{n+nb}{range}\PY{o}{=}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mf}{7.5}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{]}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Petal Width vs Petal Length of Virginica}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Petal Length}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Petal Width}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}60}]:} \PY{n}{testData} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gila monster}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{non\PYZhy{}mammals}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                    \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{platypus}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mammals}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                    \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{owl}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{non\PYZhy{}mammals}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                    \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dolphin}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mammals}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+         \PY{n}{testData} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{testData}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{n}{data}\PY{o}{.}\PY{n}{columns}\PY{p}{)}
+         \PY{n}{testData}
 \end{Verbatim}
 
 
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_14_0.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_14_1.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_14_2.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
-    The range of size of the larger flowers tends to be wider. The axis
-labels are important for these, as we can see the Setosa's maximum petal
-length is shorter than the smallest Versicolor or Virginica.
-
-2.3
-
-For each category, generate the BOX PLOTs for all four features
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}60}]:}            Name  Warm-blooded  Gives Birth  Aquatic Creature  Aerial Creature  \textbackslash{}
+         0  gila monster             0            0                 0                0   
+         1      platypus             1            0                 0                0   
+         2           owl             1            0                 0                1   
+         3       dolphin             1            1                 1                0   
+         
+            Has Legs  Hibernates        Class  
+         0         1           1  non-mammals  
+         1         1           1      mammals  
+         2         1           0  non-mammals  
+         3         0           0      mammals  
+\end{Verbatim}
+            
+    We first extract the predictor and target class attributes from the test
+data and then apply the decision tree classifier to predict their
+classes.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}103}]:} \PY{n}{iris}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{iris}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{species}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{setosa}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sepal\PYZus{}length}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sepal\PYZus{}width}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}length}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}width}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Boxplot of Setosa Features}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Value (in centimeters)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
-          \PY{n}{iris}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{iris}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{species}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{versicolor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sepal\PYZus{}length}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sepal\PYZus{}width}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}length}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}width}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Boxplot of Versicolor Features}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Value (in centimeters)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
-          \PY{n}{iris}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{iris}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{species}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{virginica}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sepal\PYZus{}length}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sepal\PYZus{}width}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}length}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}width}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Boxplot of Virginica Features}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Value (in centimeters)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}62}]:} \PY{n}{testY} \PY{o}{=} \PY{n}{testData}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Class}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{n}{testX} \PY{o}{=} \PY{n}{testData}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Class}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+         
+         \PY{n}{predY} \PY{o}{=} \PY{n}{clf}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{testX}\PY{p}{)}
+         \PY{n}{predictions} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{concat}\PY{p}{(}\PY{p}{[}\PY{n}{testData}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{n}{predY}\PY{p}{,}\PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Predicted Class}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{]}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{predictions}
 \end{Verbatim}
 
 
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_16_0.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_16_1.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_16_2.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
-    2.4
-
-Visualization of similarity matrix.
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}62}]:}            Name Predicted Class
+         0  gila monster     non-mammals
+         1      platypus     non-mammals
+         2           owl     non-mammals
+         3       dolphin         mammals
+\end{Verbatim}
+            
+    Except for platypus, which is an egg-laying mammal, the classifier
+correctly predicts the class label of the test examples. We can
+calculate the accuracy of the classifier on the test data as shown by
+the example given below.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}114}]:} \PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{spatial}\PY{n+nn}{.}\PY{n+nn}{distance} \PY{k}{import} \PY{n}{euclidean}\PY{p}{,} \PY{n}{pdist}\PY{p}{,} \PY{n}{squareform}
-          
-          
-          \PY{k}{def} \PY{n+nf}{similarity}\PY{p}{(}\PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{)}\PY{p}{:}
-              \PY{k}{return} \PY{l+m+mi}{1}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{+}\PY{n}{euclidean}\PY{p}{(}\PY{n}{u}\PY{p}{,}\PY{n}{v}\PY{p}{)}\PY{p}{)}
-          
-          \PY{n}{dists} \PY{o}{=} \PY{n}{pdist}\PY{p}{(}\PY{n}{iris}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sepal\PYZus{}length}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sepal\PYZus{}width}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}length}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petal\PYZus{}width}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{similarity}\PY{p}{)}
-          \PY{n}{euclid} \PY{o}{=} \PY{n}{pandas}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{squareform}\PY{p}{(}\PY{n}{dists}\PY{p}{)}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{n}{iris}\PY{o}{.}\PY{n}{index}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}63}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{metrics} \PY{k}{import} \PY{n}{accuracy\PYZus{}score}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy on test data is }\PY{l+s+si}{\PYZpc{}.2f}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{p}{(}\PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{testY}\PY{p}{,} \PY{n}{predY}\PY{p}{)}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}121}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{euclid}\PY{p}{,} \PY{n}{interpolation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{none}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Similarity Matrix of Iris}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{s}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Virginica, Versicolor, and Setosa}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
-\end{Verbatim}
+Accuracy on test data is 0.75
 
+    \end{Verbatim}
 
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_19_0.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
 
     % Add a bibliography block to the postdoc
     
